@@ -1,5 +1,7 @@
 # Kuaotunu Scavenger Hunt
 
+If you're coming to new years don't read ahead! SPOILER ALERT
+
 ## Clue ideas
 
 ### Locations
@@ -31,5 +33,4 @@
 ## TODOs
 
 * Make clue front end (not just a shitty index.html)
-* Set up public dns
-* 
+* Set up public dns 
