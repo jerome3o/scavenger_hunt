@@ -1,18 +1,18 @@
-
-
 body {
   margin: auto;
   width: 640px; 
   padding: 50px;
   font-family: 'Avenir', sans-serif; 
   color: #33475b;    
-      }
+}
 
 img{
   padding: 10px; 
 }
 
-
+h1 {
+  text-align: center;
+}
 
 /* .center { */
 /*   line-height: 200px; */
@@ -20,11 +20,6 @@ img{
 /*   border: 3px solid green; */
 /*   text-align: center; */
 /* } */
-
-/* h1 { */
-/*   text-align: center; */
-/* } */
-
 /* img { */
 /*   display: block; */
 /*   margin-left: auto; */
