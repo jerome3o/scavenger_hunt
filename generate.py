@@ -44,14 +44,18 @@ def _generate_clue(
     if image:
         shutil.copy(image, output_dir / image.name)
 
-def _generate_qr_code(fn: str, url: str):
+def _generate_qr_code(fn: str, url: str, text: str):
     # # qr code
-    img = qrcode.make(data=url)
-    img.save(fn)
+    raw_img = qrcode.make(data=url)
+    text_pad = 100
+    img = Image.new(raw_img.mode, size=(raw_img.size[0], raw_img.size[1] + text_pad), color=255)
+    img.putdata(raw_img.getdata())
+    
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype("arial.ttf", 18)
-    draw.text((0, 0), "Sample Text", 255, font=font)
-    img.save('sample-out.jpg')
+    draw.text((20, raw_img.size[1] + text_pad // 2), text, font=font)
+
+    img.save(fn)
     
 
 def main():
@@ -69,6 +73,7 @@ def main():
         _generate_qr_code(
             _qr_dir / f"{clue_title}.png",
             (_base_url + clue_encoded_title).encode("utf-8"),
+            clue_title,
         )
 
 if __name__ == "__main__":
