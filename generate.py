@@ -4,6 +4,10 @@ import qrcode
 from urllib.parse import quote_plus
 import base64
 
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw 
+
 _clue_dir = Path("clues/")
 _template_dir = Path("template/")
 _site_dir = Path("site/")
@@ -22,24 +26,32 @@ def _generate_clue(
     text = text_f.read_text() if text_f.exists() else ""
     
     images = list(clue_dir.glob("image.*"))
+    image = None
     if images:
         image = images[0]
+        img_text = f'<img src="{image.name}" alt="oops!"/>'
     else:
-        image = _template_dir / "image.png"
-
-    html = (_template_dir / "index.html").read_text().format(clue_text=text, img_url=image.name)
+        img_text = ''
+    
+    
+    html = (_template_dir / "index.html").read_text().format(clue_text=text, img_text=img_text)
     (output_dir / "index.html").write_text(html)
 
     shutil.copy(
         _template_dir / "index.css", 
         output_dir / "index.css",
     )
-    shutil.copy(image, output_dir / image.name)
+    if image:
+        shutil.copy(image, output_dir / image.name)
 
 def _generate_qr_code(fn: str, url: str):
     # # qr code
     img = qrcode.make(data=url)
     img.save(fn)
+    draw = ImageDraw.Draw(img)
+    font = ImageFont.truetype("arial.ttf", 18)
+    draw.text((0, 0), "Sample Text", 255, font=font)
+    img.save('sample-out.jpg')
     
 
 def main():
