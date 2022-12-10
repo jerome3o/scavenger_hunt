@@ -3,6 +3,7 @@ import shutil
 import qrcode
 from urllib.parse import quote_plus
 import base64
+import hashlib
 
 from PIL import Image
 from PIL import ImageFont
@@ -29,7 +30,7 @@ def _generate_clue(
     image = None
     if images:
         image = images[0]
-        img_text = f'<img src="{image.name}" alt="oops!"/>'
+        img_text = f'<img src="{image.name}" alt="oops!" class="center"/>'
     else:
         img_text = ''
     
@@ -57,6 +58,8 @@ def _generate_qr_code(fn: str, url: str, text: str):
 
     img.save(fn)
     
+def _get_encoded_name(name: str) -> str:
+    return str(hashlib.sha256(name.encode("utf-8")).hexdigest())
 
 def main():
     _qr_dir.mkdir(exist_ok=True, parents=True)
@@ -65,7 +68,7 @@ def main():
         if not list(clue_dir.iterdir()):
             continue
         clue_title = clue_dir.name
-        clue_encoded_title = base64.b64encode(clue_title.encode("utf-8")).decode("utf-8").strip("=")
+        clue_encoded_title = _get_encoded_name(clue_title) 
         _generate_clue(
             clue_dir, 
             _site_dir / "scavenger_hunt" / clue_encoded_title,
@@ -75,6 +78,16 @@ def main():
             (_base_url + clue_encoded_title).encode("utf-8"),
             clue_title,
         )
+
+    clue_dirs = sorted(d.stem for d in Path(_clue_dir).iterdir() if d.is_dir())
+    html = "<html>\n<body>\n<ul>\n"
+    for folder in clue_dirs:
+        encoded_name = _get_encoded_name(folder)
+        html += f"<li><a href='/scavenger_hunt/{encoded_name}'>{folder}</a></li>\n"
+    html += "</ul>\n</body>\n</html>"
+
+    Path("site/scavenger_hunt/clue_index.html").write_text(html)
+
 
 if __name__ == "__main__":
     import logging
