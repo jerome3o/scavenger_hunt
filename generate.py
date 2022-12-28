@@ -106,7 +106,7 @@ def main():
 
     # collate images in lots of 4
     for ii, i in enumerate(range(0, len(images), 4)):
-        _collate_images(images[i : i + 4], _qr_dir / f"collated_{i}.png")
+        _collate_images(images[i : i + 4], _qr_dir / f"collated_{ii}.png")
 
 
 if __name__ == "__main__":
