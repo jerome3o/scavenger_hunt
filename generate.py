@@ -101,6 +101,13 @@ def main():
 
     Path("site/scavenger_hunt/clue_index.html").write_text(html)
 
+    # read all images from qrcodes folder
+    images = [Image.open(_qr_dir / f"{clue_title}.png") for clue_title in clue_dirs]
+
+    # collate images in lots of 4
+    for ii, i in enumerate(range(0, len(images), 4)):
+        _collate_images(images[i : i + 4], _qr_dir / f"collated_{i}.png")
+
 
 if __name__ == "__main__":
     import logging
