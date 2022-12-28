@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- add simple styles -->
+  <style>    
+    body {
+      margin: auto;
+      width: 640px; 
+      padding: 50px;
+      font-family: 'Avenir', sans-serif; 
+      color: #33475b;    
+    }
+
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+
+    .button {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 10px;
+      width: 100%;
+      background-color: #33475b;
+      color: white;
+      padding: 20px;
+      border: none;
+      border-radius: 0px;
+      cursor: pointer;
+    }
+
+    h1 {
+      text-align: center;
+    }
+  </style>
+  <title>Document</title>
+</head>
+<body>
+  <!-- Jinja2 template -->
+
+  <!-- Display a list of teams as vertically stacked buttons -->
+  <div id="teams" class="center" display="block">
+    {% for team in teams %}
+    <button class="button" onclick="getClue({{team.id}})">{{ team.name }}</button>
+    {% endfor %}
+  </div>
+
+  <!-- Display the selected team's information in this div -->
+  <div id="team-info" class="center"></div>
+
+  <!-- Add a script to handle clicks on the team buttons and display the selected team's information -->
+  <script>
+    function getClue(teamId) {
+      // get the team-info div
+      const teamInfoDiv = document.querySelector('#team-info');
+      switch (teamId) {
+      {% for team in teams %}
+        case {{ team.id }}:
+          teamInfoDiv.innerHTML = `
+            <h2>{{ team.name }}</h2>
+            <p>{{ team.description }}</p>
+          `;
+          break;
+      {% endfor %}
+    };
+    // hide the team buttons 
+    // get div with id teams
+    teamsDiv = document.querySelector('#teams');
+    // set display to none
+    teamsDiv.style.display = 'none';
+    };
+  </script>
+</body>
+</html>
