@@ -21,20 +21,6 @@
       width: 100%;
     }
 
-    .button {
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      margin-top: 10px;
-      width: 100%;
-      background-color: #33475b;
-      color: white;
-      padding: 20px;
-      border: none;
-      border-radius: 0px;
-      cursor: pointer;
-    }
-
     h1 {
       text-align: center;
     }
@@ -43,38 +29,16 @@
 </head>
 <body>
   <!-- Jinja2 template -->
-
-  <!-- Display a list of teams as vertically stacked buttons -->
-  <div id="teams" class="center" display="block">
-    {% for team in teams %}
-    <button class="button" onclick="getClue({{team.id}})">{{ team.name }}</button>
-    {% endfor %}
+  <div class="center">
+    <h1>Kuaochella Scavenger Hunt</h1>
+    {% if text %}
+      <h2>{{ text }}</h2>
+    {% endif %}
+    {% if image_uri %}
+      <img src="{{ image_uri }}" alt="clue image" class="center">
+    {% endif %}
   </div>
 
-  <!-- Display the selected team's information in this div -->
-  <div id="team-info" class="center"></div>
 
-  <!-- Add a script to handle clicks on the team buttons and display the selected team's information -->
-  <script>
-    function getClue(teamId) {
-      // get the team-info div
-      const teamInfoDiv = document.querySelector('#team-info');
-      switch (teamId) {
-      {% for team in teams %}
-        case {{ team.id }}:
-          teamInfoDiv.innerHTML = `
-            <h2>{{ team.name }}</h2>
-            <p>{{ team.description }}</p>
-          `;
-          break;
-      {% endfor %}
-    };
-    // hide the team buttons 
-    // get div with id teams
-    teamsDiv = document.querySelector('#teams');
-    // set display to none
-    teamsDiv.style.display = 'none';
-    };
-  </script>
 </body>
 </html>

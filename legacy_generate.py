@@ -99,14 +99,7 @@ def main():
         html += f"<li><a href='/scavenger_hunt/{encoded_name}'>{folder}</a></li>\n"
     html += "</ul>\n</body>\n</html>"
 
-    Path("site/scavenger_hunt/clue_index.html").write_text(html)
-
-    # read all images from qrcodes folder
-    images = [Image.open(_qr_dir / f"{clue_title}.png") for clue_title in clue_dirs]
-
-    # collate images in lots of 4
-    for ii, i in enumerate(range(0, len(images), 4)):
-        _collate_images(images[i : i + 4], _qr_dir / f"collated_{ii}.png")
+    Path("site/scavenger_hunt/clue_index.html", encoding="utf-8").write_text(html)
 
 
 if __name__ == "__main__":
