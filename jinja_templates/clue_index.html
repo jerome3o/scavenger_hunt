@@ -21,7 +21,7 @@
       width: 80%;
     }
 
-    h1, h2, h3, p {
+    h1, h2, h3 {
       text-align: center;
     }
   </style>
@@ -31,14 +31,15 @@
   <!-- Jinja2 template -->
   <div class="center">
     <h1>Kuaochella Scavenger Hunt</h1>
-    <h3>Clue {{ number }} of {{ total }}</h3>
-    {% if text %}
-      <h2>{{ text }}</h2>
-    {% endif %}
-    {% if image_uri %}
-      <img src="{{ image_uri }}" alt="clue image" class="center">
-    {% endif %}
-  </div>
+    <!-- Jinja2 template of each clue as a unordered list -->
+    <ul>
+      {% for clue in clues %}
+        <li>
+          <a href="/scavenger_hunt/{{ clue.encoded_name }}">{{ clue.name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
 
+  </div>
 </body>
 </html>
