@@ -8,6 +8,20 @@ from pydantic import BaseModel
 import jinja2
 
 
+clue_number_fixup = {
+    "1_cone": 1,
+    "2_mailbox": 2,
+    "3_park_bench_map": 3,
+    "5_bridge": 5,
+    "6_book_buoy": 6,
+    "4_seagull": 4,
+    "7_placeholder": 7,  # telescope
+    "8_placeholder": 8,  # rock
+    "9_placeholder": 9,  # DVD
+    "10_placeholder": 10,  # final
+}
+
+
 class Clue(BaseModel):
     encoded_name: str
     name: str
@@ -50,7 +64,7 @@ def load_clue_data(clue_dir: Path) -> Clue:
     encoded_name: str = _get_encoded_name(name)
 
     # get clue number by splitting on _ and getting the first part
-    clue_number = int(name.split("_")[0])
+    clue_number = clue_number_fixup[name]
 
     # load clue text from text.txt, if it exists
     text = (clue_dir / "text.txt").read_text() if (clue_dir / "text.txt").exists() else ""
