@@ -11,12 +11,13 @@ import jinja2
 class Clue(BaseModel):
     encoded_name: str
     name: str
+    number: int
     text: Optional[str] = None
     image_path: Optional[str] = None
     image_uri: Optional[str] = None
 
 
-def render_clue(clue: Clue, number: int, total: int):
+def render_clue(clue: Clue, total: int):
     # Set up the Jinja2 environment
     template_loader = jinja2.FileSystemLoader(searchpath="./jinja_templates/")
     template_env = jinja2.Environment(loader=template_loader)
@@ -25,7 +26,7 @@ def render_clue(clue: Clue, number: int, total: int):
     template = template_env.get_template("clue.html")
 
     # Render the template with the context
-    output = template.render(**clue.dict(), number=number, total=total)
+    output = template.render(**clue.dict(), total=total)
 
     return output
 
@@ -34,6 +35,9 @@ def load_clue_data(clue_dir: Path) -> Clue:
 
     name: str = clue_dir.name
     encoded_name: str = _get_encoded_name(name)
+
+    # get clue number by splitting on _ and getting the first part
+    clue_number = int(name.split("_")[0])
 
     # load clue text from text.txt, if it exists
     text = (clue_dir / "text.txt").read_text() if (clue_dir / "text.txt").exists() else ""
@@ -47,6 +51,7 @@ def load_clue_data(clue_dir: Path) -> Clue:
 
     return Clue(
         text=text,
+        number=clue_number,
         image_path=image_path,
         image_uri=image_uri,
         name=name,
@@ -78,24 +83,23 @@ def main():
     # load clues
     clues = load_clues_from_clue_dir(Path("clues"))
 
-    # make site dir
-    site_dir = Path("site/scavenger_hunt/images").mkdir(parents=True, exist_ok=True)
-
     # copy clue images to site/scavenger_hunt/images
     for clue in clues.values():
         if clue.image_path:
             print(f"Copying {clue.image_path} to site/scavenger_hunt/images")
+            output_path = Path("site" + clue.image_uri)
+            output_path.mkdir(parents=True, exist_ok=True)
             shutil.copy(
                 clue.image_path,
-                "site" + clue.image_uri,
+                str(output_path),
             )
 
     # render clues
-    for number, (name, clue) in enumerate(clues.items(), 1):
-        output = render_clue(clue, number, len(clues))
+    for name, clue in clues.items():
+        output = render_clue(clue, len(clues))
         path = Path("site") / "scavenger_hunt" / f"{clue.encoded_name}" / "index.html"
         path.parent.mkdir(parents=True, exist_ok=True)
-        print("rendering clue", name, "to", path)
+        print("Saving clue", name, "to", path)
         path.write_text(output)
 
 
