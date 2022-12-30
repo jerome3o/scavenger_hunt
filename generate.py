@@ -25,7 +25,7 @@ def render_clue(clue: Clue, number: int, total: int):
     template = template_env.get_template("clue.html")
 
     # Render the template with the context
-    output = template.render(clue=clue, number=number, total=total)
+    output = template.render(**clue.dict(), number=number, total=total)
 
     return output
 
@@ -42,12 +42,12 @@ def load_clue_data(clue_dir: Path) -> Clue:
     image_path = next(clue_dir.glob("*image*"), None)
     image_uri = None
     if image_path is not None:
-        image_uri = f"/scavenger_hunt/images/{image_path.name}" if image_path else ""
+        image_uri = f"/scavenger_hunt/images/{name}{image_path.suffix}" if image_path else ""
         image_path = str(image_path)
 
     return Clue(
         text=text,
-        image_path=str(image_path),
+        image_path=image_path,
         image_uri=image_uri,
         name=name,
         encoded_name=encoded_name,
@@ -78,11 +78,17 @@ def main():
     # load clues
     clues = load_clues_from_clue_dir(Path("clues"))
 
+    # make site dir
+    site_dir = Path("site/scavenger_hunt/images").mkdir(parents=True, exist_ok=True)
+
     # copy clue images to site/scavenger_hunt/images
     for clue in clues.values():
         if clue.image_path:
             print(f"Copying {clue.image_path} to site/scavenger_hunt/images")
-            shutil.copy(clue.image_path, "site/scavenger_hunt/images")
+            shutil.copy(
+                clue.image_path,
+                "site" + clue.image_uri,
+            )
 
     # render clues
     for number, (name, clue) in enumerate(clues.items(), 1):

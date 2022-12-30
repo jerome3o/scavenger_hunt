@@ -8,7 +8,7 @@
   <style>    
     body {
       margin: auto;
-      width: 640px; 
+      width: 70%;
       padding: 50px;
       font-family: 'Avenir', sans-serif; 
       color: #33475b;    
@@ -18,10 +18,10 @@
       display: block;
       margin-left: auto;
       margin-right: auto;
-      width: 100%;
+      width: 80%;
     }
 
-    h1 {
+    h1, h2, h3 {
       text-align: center;
     }
   </style>
@@ -31,6 +31,7 @@
   <!-- Jinja2 template -->
   <div class="center">
     <h1>Kuaochella Scavenger Hunt</h1>
+    <h3>Clue {{ number }} of {{ total }}</h3>
     {% if text %}
       <h2>{{ text }}</h2>
     {% endif %}
@@ -38,7 +39,5 @@
       <img src="{{ image_uri }}" alt="clue image" class="center">
     {% endif %}
   </div>
-
-
 </body>
 </html>

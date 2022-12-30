@@ -1,5 +1,5 @@
 rm -rf site/
-python legacy_generate.py
+python generate.py
 ssh -T kuao << EOF > /dev/null
 rm -rf /var/www/kuaochella.com/scavenger_hunt/
 EOF
