@@ -35,7 +35,10 @@
     <ul>
       {% for clue in clues %}
         <li>
-          <a href="/scavenger_hunt/{{ clue.encoded_name }}">{{ clue.name }}</a>
+          <!-- clue number in bold, followed by name -->
+          <a href="/scavenger_hunt/{{ clue.encoded_name }}">
+            <strong>Clue {{ clue.number }}: </strong> {{ clue.name }} 
+          </a>
         </li>
       {% endfor %}
     </ul>

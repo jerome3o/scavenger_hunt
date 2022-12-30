@@ -12,9 +12,9 @@ clue_number_fixup = {
     "1_cone": 1,
     "2_mailbox": 2,
     "3_park_bench_map": 3,
-    "5_bridge": 5,
-    "6_book_buoy": 6,
-    "4_seagull": 4,
+    "5_bridge": 4,
+    "6_book_buoy": 5,
+    "4_seagull": 6,
     "7_placeholder": 7,  # telescope
     "8_placeholder": 8,  # rock
     "9_placeholder": 9,  # DVD
